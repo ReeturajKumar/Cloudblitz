@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Enquiry from "../models/Enquiry";
 import mongoose from "mongoose";
+import User from "../models/User";
 
 export const createEnquiry = async (req: Request, res: Response) => {
   try {
@@ -24,32 +25,58 @@ export const createEnquiry = async (req: Request, res: Response) => {
 
 export const getEnquiries = async (req: Request, res: Response) => {
   try {
-    const role = (req as any).role;
-    const userId = (req as any).userId;
-    const { status, search } = req.query;
-    const filter: any = { deleted: false };
+    const { status, search, assignedTo, page = 1, limit = 10 } = req.query;
 
-    if (status) filter.status = status;
+    const query: any = {};
+
+    // 🔹 Filter by status
+    if (status && status !== "All") {
+      query.status = status;
+    }
+
+    // 🔹 Filter by assignedTo (for admin to see by staff)
+    if (assignedTo) {
+      query.assignedTo = assignedTo;
+    }
+
+    // 🔹 Search by name, email, or phone
     if (search) {
-      filter.$or = [
+      query.$or = [
         { customerName: { $regex: search, $options: "i" } },
         { email: { $regex: search, $options: "i" } },
         { phone: { $regex: search, $options: "i" } },
       ];
     }
 
-    // Staff can only see their assigned enquiries
+    // 🔹 Pagination
+    const skip = (Number(page) - 1) * Number(limit);
+
+    // 🔹 If user is staff, only show assigned enquiries
+    const { role, userId } = req as any;
+
     if (role === "staff") {
-      filter.assignedTo = userId;
+      query.assignedTo = userId;
     }
 
-    const data = await Enquiry.find(filter)
+    // 🔹 Fetch enquiries
+    const enquiries = await Enquiry.find(query)
       .populate("assignedTo", "name email role")
-      .sort({ createdAt: -1 });
-    res.json(data);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to fetch enquiries" });
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(Number(limit));
+
+    const total = await Enquiry.countDocuments(query);
+
+    res.json({
+      success: true,
+      total,
+      page: Number(page),
+      limit: Number(limit),
+      data: enquiries,
+    });
+  } catch (error) {
+    console.error("Error fetching enquiries:", error);
+    res.status(500).json({ error: "Server error while fetching enquiries" });
   }
 };
 

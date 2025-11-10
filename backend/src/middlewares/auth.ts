@@ -1,25 +1,41 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import User from "../models/User";
 
-const JWT_SECRET = process.env.JWT_SECRET || "secret";
+interface DecodedToken {
+  id: string;
+  iat: number;
+  exp: number;
+}
 
-export default function auth(req: Request, res: Response, next: NextFunction) {
-  const header = req.headers.authorization;
-  if (!header) return res.status(401).json({ error: "No token" });
+export default async function auth(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const authHeader = req.headers.authorization;
 
-  const [type, token] = header.split(" ");
-  if (type !== "Bearer" || !token)
-    return res.status(401).json({ error: "Invalid token format" });
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Unauthorized - No token provided" });
+  }
+
+  const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as {
-      userId: string;
-      role: string;
-    };
-    (req as any).userId = decoded.userId;
-    (req as any).role = decoded.role;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
+    const user = await User.findById(decoded.id).select("-passwordHash");
+
+    if (!user) {
+      return res.status(401).json({ error: "User not found" });
+    }
+
+    // ✅ Attach user info safely
+    (req as any).user = user;
+    (req as any).userId = user._id;
+    (req as any).role = user.role;
+
     next();
-  } catch {
-    res.status(401).json({ error: "Invalid token" });
+  } catch (err) {
+    return res.status(401).json({ error: "Invalid or expired token" });
   }
 }
