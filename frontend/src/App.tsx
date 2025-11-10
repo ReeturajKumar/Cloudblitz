@@ -1,39 +1,28 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider } from "../src/context/AuthContext";
-import { ProtectedRoute } from "../src/component/ProtectedRoute";
-import Login from "../src/pages/Login";
-import Register from "../src/pages/Register";
+import { AuthProvider } from "./context/AuthContext";
+import { ProtectedRoute } from "./component/ProtectedRoute";
+import { PublicRoute } from "./component/PublicRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { PublicRoute } from "./component/PublicRoute";
 
-function Home() {
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-sky-50">
-      <h1 className="text-3xl font-bold text-indigo-700 mb-4">
-        Welcome to CloudBlitz CRM ⚡
-      </h1>
-      <p className="text-gray-600">You are logged in successfully.</p>
-    </div>
-  );
-}
+// Auth Pages
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
+// Admin Layout + Pages
+import DashboardLayout from "./component/layout/DashboardLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import Enquiries from "./pages/admin/Enquiries";
+import Users from "./pages/admin/Users";
+import Analytics from "./pages/admin/Analytics";
+import Settings from "./pages/admin/Settings";
 
 export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Protected route: Home (Dashboard) */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Public routes */}
+          {/* ✅ Public Routes */}
           <Route
             path="/login"
             element={
@@ -52,10 +41,27 @@ export default function App() {
             }
           />
 
-          {/* Redirect all unknown routes */}
+          {/* ✅ Protected Routes */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="enquiries" element={<Enquiries />} />
+            <Route path="users" element={<Users />} />
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
+
+          {/* ✅ Redirect Unknown Routes */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
+        {/* Toastify Notifications */}
         <ToastContainer position="top-right" autoClose={3000} />
       </BrowserRouter>
     </AuthProvider>

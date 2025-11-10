@@ -12,9 +12,9 @@ import { requireRole } from "../middlewares/roles";
 const router = Router();
 
 router.post("/", auth, createEnquiry);
-router.get("/", auth, requireRole("admin"), getEnquiries);
+router.get("/", auth, getEnquiries);
 router.get("/:id", auth, getEnquiryById);
-router.put("/:id", auth, updateEnquiry);
+router.put("/:id", auth, requireRole("admin"), updateEnquiry);
 router.delete("/:id", auth, requireRole("admin"), deleteEnquiry);
 
 export default router;

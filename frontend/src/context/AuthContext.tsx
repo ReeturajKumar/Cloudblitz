@@ -12,6 +12,7 @@ export interface User {
 export interface AuthContextType {
   user: User | null;
   token: string | null;
+  loading: boolean;
   login: (token: string, user: User) => void;
   logout: () => void;
 }
@@ -21,18 +22,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
+  // ✅ Load token & validate user on app start
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      api
-        .get("/auth/me")
-        .then((res) => {
+    const initializeAuth = async () => {
+      const storedToken = localStorage.getItem("token");
+      if (storedToken) {
+        try {
+          const res = await api.get("/auth/me", {
+            headers: { Authorization: `Bearer ${storedToken}` },
+          });
           setUser(res.data.user);
           setToken(storedToken);
-        })
-        .catch(() => logout());
-    }
+        } catch (err) {
+          console.error("Auth validation failed:", err);
+          logout();
+        }
+      }
+      setLoading(false);
+    };
+
+    initializeAuth();
   }, []);
 
   const login = (token: string, user: User) => {
@@ -48,7 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
