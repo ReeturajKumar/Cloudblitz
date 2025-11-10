@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useCallback, type JSX } from "react";
 import api from "../../services/api";
@@ -35,7 +36,6 @@ const Dashboard = () => {
   // ✅ Fetch Stats
   const fetchStats = useCallback(async () => {
     try {
-      setLoading(true);
       const res = await api.get("/enquiries");
       const all = res.data.data || [];
       const active = all.filter((e: any) => !e.deleted);
@@ -44,7 +44,9 @@ const Dashboard = () => {
       const inProgressCount = active.filter(
         (e) => e.status === "in_progress"
       ).length;
-      const closedCount = active.filter((e) => e.status === "closed").length;
+      const closedCount = active.filter(
+        (e: { status: string }) => e.status === "closed"
+      ).length;
       const total = active.length;
 
       const today = new Date();
