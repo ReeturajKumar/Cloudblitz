@@ -15,7 +15,7 @@ const run = async () => {
 
     const existing = await User.findOne({ email: adminEmail });
     if (existing) {
-      console.log(`ℹ️ Admin already exists: ${adminEmail}`);
+      console.log(`Admin already exists: ${adminEmail}`);
       process.exit(0);
     }
 
@@ -27,11 +27,11 @@ const run = async () => {
       role: "admin",
     });
 
-    console.log(`✅ Admin created: ${admin.email}`);
-    console.log(`🔑 Password: ${adminPass}`);
+    console.log(`Admin created: ${admin.email}`);
+    console.log(`Password: ${adminPass}`);
     process.exit(0);
   } catch (err) {
-    console.error("❌ Seeder failed:", err);
+    console.error("Seeder failed:", err);
     process.exit(1);
   }
 };
