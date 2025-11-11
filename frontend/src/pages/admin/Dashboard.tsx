@@ -15,6 +15,7 @@ import { WeeklyTrendChart } from "../../component/charts/WeeklyTrendChart";
 import { StatusDistributionChart } from "../../component/charts/StatusDistributionChart";
 import { RecentEnquiries } from "../../component/dashboard/RecentEnquiries";
 import { RecentActivity } from "../../component/dashboard/RecentActivity";
+import { TeamPerformance } from "../../component/dashboard/TeamPerformance";
 
 interface Stat {
   title: string;
@@ -32,11 +33,13 @@ const Dashboard = () => {
   const refreshAll = useCallback(() => {
     setRefreshTrigger((prev) => prev + 1);
   }, []);
+  const isAdmin = user?.role === "admin";
 
   // ✅ Fetch Stats
   const fetchStats = useCallback(async () => {
     try {
-      const res = await api.get("/enquiries");
+      const res = await api.get("/enquiries?limit=10000&page=1");
+
       const all = res.data.data || [];
       const active = all.filter((e: any) => !e.deleted);
 
@@ -118,15 +121,14 @@ const Dashboard = () => {
       <div className="flex flex-wrap justify-between items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold mb-1">
-            Welcome back, {user?.name || "User"} 👋
+            Welcome back, {user?.name || "User"}
           </h2>
           <p className="text-gray-600">
             Here’s what’s happening with your enquiries today.
           </p>
         </div>
 
-        {/* New Enquiry Button */}
-        <NewEnquiryDialog onCreated={refreshAll} />
+        {isAdmin && <NewEnquiryDialog onCreated={refreshAll} />}
       </div>
       {/* Stats */}
       {loading ? (
@@ -174,6 +176,9 @@ const Dashboard = () => {
           <RecentActivity refreshTrigger={refreshTrigger} />
         </div>
       </div>
+      {user?.role === "admin" && (
+        <TeamPerformance refreshTrigger={refreshTrigger} />
+      )}
     </div>
   );
 };

@@ -1,17 +1,24 @@
-import { Home, Users, BarChart2, Settings, Menu } from "lucide-react";
+import { Home, Users, BarChart2, Menu, LogOut } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../../context/useAuth";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useAuth(); // Add logout from useAuth
+  const isAdmin = user?.role === "admin";
 
   const navItems = [
     { name: "Dashboard", icon: <Home size={18} />, path: "/" },
     { name: "Enquiries", icon: <BarChart2 size={18} />, path: "/enquiries" },
-    { name: "Users", icon: <Users size={18} />, path: "/users" },
-    { name: "Analytics", icon: <BarChart2 size={18} />, path: "/analytics" },
-    { name: "Settings", icon: <Settings size={18} />, path: "/settings" },
+    ...(isAdmin ? [{ name: "Users", path: "/users", icon: <Users /> }] : []),
   ];
+
+  // Logout handler
+  const handleLogout = () => {
+    logout();
+    setIsOpen(false); // Close sidebar on mobile after logout
+  };
 
   return (
     <>
@@ -56,9 +63,13 @@ const Sidebar = () => {
 
         <div className="mt-4 border-t border-blue-900 pt-4">
           <div className="bg-blue-800 text-center rounded-lg p-3">
-            <p className="text-sm">Upgrade to Pro</p>
-            <button className="bg-blue-500 w-full mt-2 text-sm py-1 rounded-md hover:bg-blue-400 transition">
-              Upgrade Now
+            <p className="text-sm">Welcome, {user?.name}</p>
+            <button
+              onClick={handleLogout}
+              className="flex items-center justify-center gap-2 bg-red-500 w-full mt-2 text-sm py-2 rounded-md hover:bg-red-400 transition cursor-pointer"
+            >
+              <LogOut size={16} />
+              Logout
             </button>
           </div>
         </div>

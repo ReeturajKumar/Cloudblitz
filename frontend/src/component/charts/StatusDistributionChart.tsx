@@ -17,7 +17,7 @@ export const StatusDistributionChart = ({
   useEffect(() => {
     const fetchStatusData = async () => {
       try {
-        const res = await api.get("/enquiries");
+        const res = await api.get("/enquiries?limit=10000&page=1");
         const all = res.data.data || [];
 
         const active = all.filter((e: any) => !e.deleted);

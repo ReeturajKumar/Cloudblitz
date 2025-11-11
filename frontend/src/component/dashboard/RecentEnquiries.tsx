@@ -83,7 +83,7 @@ export function RecentEnquiries({
           variant="outline"
           size="sm"
           onClick={() => navigate("/enquiries")}
-          className="hover:bg-blue-50 text-blue-600 border-blue-200"
+          className="hover:bg-blue-50 text-blue-600 border-blue-200 cursor-pointer"
         >
           View All
         </Button>
@@ -127,7 +127,7 @@ export function RecentEnquiries({
                   <td className="px-4 py-3 text-center">
                     <button
                       onClick={() => setSelectedEnquiry(e)}
-                      className="text-blue-600 hover:text-blue-800 transition"
+                      className="text-blue-600 hover:text-blue-800 transition cursor-pointer"
                     >
                       <Eye size={18} />
                     </button>

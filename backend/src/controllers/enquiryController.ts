@@ -97,32 +97,63 @@ export const getEnquiryById = async (req: Request, res: Response) => {
 export const updateEnquiry = async (req: Request, res: Response) => {
   try {
     const { role, userId } = req as any;
-    const enquiry = await Enquiry.findById(req.params.id);
-    if (!enquiry) return res.status(404).json({ error: "Not found" });
+    console.log("🟢 Incoming Update Request");
+    console.log("➡️ User Role:", role);
+    console.log("➡️ User ID:", userId);
+    console.log("➡️ Enquiry ID:", req.params.id);
+    console.log("➡️ Request Body:", req.body);
 
-    // Staff can only update if assigned to them
-    if (role === "staff" && String(enquiry.assignedTo) !== userId) {
+    const enquiry = await Enquiry.findById(req.params.id);
+    if (!enquiry) {
+      console.log("❌ Enquiry not found in DB");
+      return res.status(404).json({ error: "Not found" });
+    }
+
+    const assignedId =
+      typeof enquiry.assignedTo === "object"
+        ? enquiry.assignedTo?._id?.toString()
+        : enquiry.assignedTo?.toString();
+
+    const requesterId = userId.toString();
+    console.log("🟠 Enquiry Found -> Assigned To:", assignedId);
+    console.log("🟡 Requester (userId):", requesterId);
+
+    // 🔹 Staff restriction (compare as strings)
+    if (role === "staff" && assignedId !== requesterId) {
+      console.log(
+        "🚫 Forbidden: Staff trying to update enquiry not assigned to them"
+      );
       return res.status(403).json({ error: "Not allowed" });
     }
 
-    const allowed = [
-      "customerName",
-      "email",
-      "phone",
-      "message",
-      "status",
-      "assignedTo",
-    ];
+    // 🔹 Allowed fields
+    const allowed =
+      role === "admin"
+        ? ["customerName", "email", "phone", "message", "status", "assignedTo"]
+        : ["status"]; // staff can only update status
+
     const updates: any = {};
-    for (const key of allowed)
+    for (const key of allowed) {
       if (key in req.body) updates[key] = (req.body as any)[key];
+    }
+
+    console.log("🟢 Final Updates To Apply:", updates);
+
+    if (Object.keys(updates).length === 0) {
+      console.log("⚠️ No allowed fields provided for update");
+      return res
+        .status(400)
+        .json({ error: "No valid fields provided for update" });
+    }
 
     const updated = await Enquiry.findByIdAndUpdate(req.params.id, updates, {
       new: true,
     });
+
+    console.log("✅ Update Successful:", updated);
     res.json(updated);
   } catch (err) {
-    console.error(err);
+    console.error("❌ Error updating enquiry:", err);
     res.status(500).json({ error: "Failed to update enquiry" });
   }
 };

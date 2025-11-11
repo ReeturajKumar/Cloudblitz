@@ -126,9 +126,10 @@ export const EnquiryDetailsDialog = ({
           </div>
 
           {/* Admin Editable Section */}
+          {/* ✅ Editable Section Based on Role */}
           {isAdmin ? (
             <>
-              {/* Status Dropdown */}
+              {/* 🟦 Admin: can update both status and assign staff */}
               <div>
                 <Label>Status</Label>
                 <Select
@@ -148,7 +149,6 @@ export const EnquiryDetailsDialog = ({
                 </Select>
               </div>
 
-              {/* Assigned To Dropdown */}
               <div>
                 <Label>Assigned To</Label>
                 <Select
@@ -185,9 +185,39 @@ export const EnquiryDetailsDialog = ({
                 </Select>
               </div>
             </>
+          ) : user?.role === "staff" &&
+            editableEnquiry.assignedTo?._id === user?._id ? (
+            <>
+              {/* 🟧 Staff: can update ONLY their assigned enquiry's status */}
+              <div>
+                <Label>Status</Label>
+                <Select
+                  value={editableEnquiry.status}
+                  onValueChange={(value) =>
+                    setEditableEnquiry({ ...editableEnquiry, status: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="in_progress">In Progress</SelectItem>
+                    <SelectItem value="closed">Closed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label>Assigned To</Label>
+                <Input
+                  value={editableEnquiry.assignedTo?.name || "Not Assigned"}
+                  disabled
+                />
+              </div>
+            </>
           ) : (
             <>
-              {/* Staff View Only */}
+              {/* 🩶 View-Only for others */}
               <div>
                 <Label>Status</Label>
                 <Input
@@ -207,14 +237,20 @@ export const EnquiryDetailsDialog = ({
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
+          <Button
+            variant="outline"
+            onClick={onClose}
+            className="cursor-pointer"
+          >
             Close
           </Button>
-          {isAdmin && (
+          {(isAdmin ||
+            (user?.role === "staff" &&
+              editableEnquiry.assignedTo?._id === user?._id)) && (
             <Button
               onClick={handleUpdate}
               disabled={saving}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
             >
               {saving ? "Saving..." : "Update"}
             </Button>

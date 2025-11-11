@@ -13,7 +13,7 @@ export const RecentActivity = ({ refreshTrigger = 0 }: RecentActivityProps) => {
   useEffect(() => {
     const fetchActivity = async () => {
       try {
-        const res = await api.get("/enquiries");
+        const res = await api.get("/enquiries?limit=10000&page=1");
         const all = res.data.data || [];
         const active = all.filter((e: any) => !e.deleted);
 
@@ -22,7 +22,7 @@ export const RecentActivity = ({ refreshTrigger = 0 }: RecentActivityProps) => {
             (a: any, b: any) =>
               new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
           )
-          .slice(0, 5)
+          .slice(0, 4)
           .map((e: any) => ({
             user: e.assignedTo?.name || "System",
             action:
@@ -55,15 +55,15 @@ export const RecentActivity = ({ refreshTrigger = 0 }: RecentActivityProps) => {
       </div>
 
       {activities.length === 0 ? (
-        <p className="text-gray-400 text-sm text-center py-6">
+        <p className="text-gray-400 text-sm text-center py-5">
           No recent activity
         </p>
       ) : (
         <ul className="divide-y">
           {activities.map((a, i) => (
-            <li key={i} className="py-3 flex items-start gap-3">
+            <li key={i} className="py-2 flex items-start gap-1">
               <div
-                className={`w-8 h-8 flex items-center justify-center rounded-full text-white text-sm font-medium ${
+                className={`w-8 h-7 flex items-center justify-center rounded-full text-white text-sm font-medium ${
                   a.action.includes("Closed")
                     ? "bg-green-500"
                     : a.action.includes("Updated")

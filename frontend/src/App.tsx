@@ -12,10 +12,8 @@ import Register from "./pages/Register";
 // Admin Layout + Pages
 import DashboardLayout from "./component/layout/DashboardLayout";
 import Dashboard from "./pages/admin/Dashboard";
-import Enquiries from "./pages/admin/Enquiries";
-import Users from "./pages/admin/Users";
-import Analytics from "./pages/admin/Analytics";
-import Settings from "./pages/admin/Settings";
+import EnquiryPage from "./pages/admin/Enquiries";
+import UsersPage from "./pages/admin/Users";
 
 export default function App() {
   return (
@@ -51,10 +49,8 @@ export default function App() {
             }
           >
             <Route index element={<Dashboard />} />
-            <Route path="enquiries" element={<Enquiries />} />
-            <Route path="users" element={<Users />} />
-            <Route path="analytics" element={<Analytics />} />
-            <Route path="settings" element={<Settings />} />
+            <Route path="enquiries" element={<EnquiryPage />} />
+            <Route path="users" element={<UsersPage />} />
           </Route>
 
           {/* ✅ Redirect Unknown Routes */}

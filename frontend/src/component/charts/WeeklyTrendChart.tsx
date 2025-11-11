@@ -31,7 +31,7 @@ export const WeeklyTrendChart = ({
   const fetchWeeklyData = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/enquiries");
+      const res = await api.get("/enquiries?limit=10000&page=1");
       const all = res.data.data || [];
 
       // ✅ Filter out deleted enquiries

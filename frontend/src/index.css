@@ -110,7 +110,16 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+
 @layer base {
+    button {
+    @apply cursor-pointer;
+  }
+  
+  /* If you also want it for button-like elements */
+  [role="button"] {
+    @apply cursor-pointer;
+  }
   * {
     @apply border-border outline-ring/50;
   }
