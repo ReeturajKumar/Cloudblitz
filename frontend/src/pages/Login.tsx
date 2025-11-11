@@ -29,9 +29,9 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left side - Image */}
+      {/* Left side - Image - Hidden on small screens */}
       <div
-        className="hidden md:flex w-1/2 bg-cover bg-center relative"
+        className="hidden md:flex w-1/2 bg-cover bg-center relative bg-gradient-to-br from-sky-100 via-white to-indigo-100"
         style={{
           backgroundImage:
             "url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80')",
@@ -39,15 +39,15 @@ export default function Login() {
       >
         <div className="absolute bottom-8 left-8 text-white space-y-2 max-w-xs md:max-w-sm">
           <p className="text-base md:text-lg font-semibold italic leading-snug drop-shadow-md">
-            “Simply all the tools that my team and I need.”
+            "Simply all the tools that my team and I need."
           </p>
           <p className="text-sm font-light opacity-90">— CloudBlitz User</p>
         </div>
       </div>
 
-      {/* Right side - Form */}
-      <div className="flex flex-col justify-center items-center w-full md:w-1/2 bg-gradient-to-br from-sky-100 via-white to-indigo-100">
-        <div className="w-full max-w-sm sm:max-w-md space-y-8">
+      {/* Right side - Form - Properly centered on small screens */}
+      <div className="flex flex-col justify-center items-center w-full md:w-1/2 p-4">
+        <div className="w-full max-w-sm space-y-8 mx-auto">
           <div className="text-center md:text-left">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-1">
               Welcome back
@@ -115,7 +115,7 @@ export default function Login() {
           </div>
 
           <p className="text-sm text-center text-gray-600 mt-4">
-            Don’t have an account?{" "}
+            Don't have an account?{" "}
             <Link
               to="/register"
               className="text-indigo-600 font-semibold hover:underline"

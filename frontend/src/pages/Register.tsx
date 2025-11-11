@@ -30,7 +30,7 @@ export default function Register() {
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left side - Image */}
       <div
-        className="hidden md:flex w-1/2 bg-cover bg-center relative"
+        className="hidden md:flex w-1/2 bg-cover bg-center relative "
         style={{
           backgroundImage:
             "url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1000&q=80')",
@@ -47,7 +47,7 @@ export default function Register() {
       </div>
 
       {/* Right side - Form */}
-      <div className="flex flex-col justify-center items-center w-full md:w-1/2 bg-gradient-to-br from-sky-100 via-white to-indigo-100">
+      <div className="flex flex-col justify-center items-center w-full md:w-1/2 ">
         <div className="w-full max-w-sm sm:max-w-md space-y-8">
           <div className="text-center md:text-left">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-1">
