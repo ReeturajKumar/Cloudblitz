@@ -43,9 +43,8 @@ const Dashboard = () => {
       const all = res.data.data || [];
       const active = all.filter((e: any) => !e.deleted);
 
-      const newCount = active.filter((e) => e.status === "new").length;
       const inProgressCount = active.filter(
-        (e) => e.status === "in_progress"
+        (e: any) => e.status === "in_progress"
       ).length;
       const closedCount = active.filter(
         (e: { status: string }) => e.status === "closed"

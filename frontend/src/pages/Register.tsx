@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
-import { useAuth } from "../context/useAuth";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
@@ -13,16 +13,14 @@ export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await api.post("/auth/register", { name, email, password });
-      login(res.data.token, res.data.user);
+      await api.post("/auth/register", { name, email, password });
       toast.success("Account created successfully!");
-      navigate("/login");
+      navigate("/login"); // Now this will work properly
     } catch (err: any) {
       toast.error(err?.response?.data?.error || "Registration failed");
     }

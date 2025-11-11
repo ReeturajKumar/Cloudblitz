@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Search, Eye, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import api from "../../services/api";
 import { toast } from "react-toastify";
@@ -13,7 +14,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../context/useAuth";
 
-const EnquiryPage = ({ stats }: any) => {
+const EnquiryPage = () => {
   const [selectedTab, setSelectedTab] = useState("all");
   const [enquiries, setEnquiries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

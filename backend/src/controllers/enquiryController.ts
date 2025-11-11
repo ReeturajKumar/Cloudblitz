@@ -103,10 +103,16 @@ export const updateEnquiry = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Not found" });
     }
 
-    const assignedId =
-      typeof enquiry.assignedTo === "object"
-        ? enquiry.assignedTo?._id?.toString()
-        : enquiry.assignedTo?.toString();
+    const assignedId = (() => {
+      if (!enquiry.assignedTo) return null;
+      if (
+        typeof enquiry.assignedTo === "object" &&
+        "toString" in enquiry.assignedTo._id
+      ) {
+        return enquiry.assignedTo._id.toString();
+      }
+      return enquiry.assignedTo?.toString?.() || null;
+    })();
 
     const requesterId = userId.toString();
 

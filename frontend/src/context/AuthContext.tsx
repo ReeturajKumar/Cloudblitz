@@ -3,10 +3,11 @@ import api from "../services/api";
 import { AuthContext } from "./auth-context";
 
 export interface User {
+  _id: any;
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: "admin" | "staff";
 }
 
 export interface AuthContextType {

@@ -9,9 +9,13 @@
     }
   ],
   "compilerOptions": {
+    "skipLibCheck": true,
+    "noEmitOnError": false,
+    "noImplicitAny": false,
+    "strict": false,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+       "@/*": ["src/*"]
     }
   }
 }

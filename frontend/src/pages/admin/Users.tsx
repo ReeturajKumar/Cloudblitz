@@ -22,7 +22,10 @@ const Modal = ({ title, onClose, children }: any) => (
     <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-gray-200">
       <div className="flex items-center justify-between border-b p-4">
         <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-        <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer">
+        <button
+          onClick={onClose}
+          className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
+        >
           <X size={18} />
         </button>
       </div>
@@ -185,8 +188,7 @@ const UsersPage = () => {
     }
 
     try {
-      const res = await api.put(`/users/${editUser._id}`, formData);
-      const updatedUser = res.data.data || res.data;
+      await api.put(`/users/${editUser._id}`, formData);
 
       // Refresh data from server
       await fetchUsers();

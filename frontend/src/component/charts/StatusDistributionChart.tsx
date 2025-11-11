@@ -89,18 +89,13 @@ export const StatusDistributionChart = ({
                 stroke="none"
                 isAnimationActive={false}
                 labelLine={false}
-                labelStyle={{
-                  fill: "#475569",
-                  fontSize: 12,
-                  fontWeight: 500,
-                }}
               >
                 {data.map((entry, i) => (
                   <Cell key={i} fill={entry.color} />
                 ))}
               </Pie>
               <Tooltip
-                formatter={(value: number, name: string, props: any) => [
+                formatter={(value: number, _name: string, props: any) => [
                   `${value} (${props.payload.percent}%)`,
                   props.payload.label,
                 ]}
