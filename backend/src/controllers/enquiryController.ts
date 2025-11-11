@@ -97,15 +97,9 @@ export const getEnquiryById = async (req: Request, res: Response) => {
 export const updateEnquiry = async (req: Request, res: Response) => {
   try {
     const { role, userId } = req as any;
-    console.log("🟢 Incoming Update Request");
-    console.log("➡️ User Role:", role);
-    console.log("➡️ User ID:", userId);
-    console.log("➡️ Enquiry ID:", req.params.id);
-    console.log("➡️ Request Body:", req.body);
 
     const enquiry = await Enquiry.findById(req.params.id);
     if (!enquiry) {
-      console.log("❌ Enquiry not found in DB");
       return res.status(404).json({ error: "Not found" });
     }
 
@@ -115,14 +109,9 @@ export const updateEnquiry = async (req: Request, res: Response) => {
         : enquiry.assignedTo?.toString();
 
     const requesterId = userId.toString();
-    console.log("🟠 Enquiry Found -> Assigned To:", assignedId);
-    console.log("🟡 Requester (userId):", requesterId);
 
     // 🔹 Staff restriction (compare as strings)
     if (role === "staff" && assignedId !== requesterId) {
-      console.log(
-        "🚫 Forbidden: Staff trying to update enquiry not assigned to them"
-      );
       return res.status(403).json({ error: "Not allowed" });
     }
 
@@ -137,10 +126,7 @@ export const updateEnquiry = async (req: Request, res: Response) => {
       if (key in req.body) updates[key] = (req.body as any)[key];
     }
 
-    console.log("🟢 Final Updates To Apply:", updates);
-
     if (Object.keys(updates).length === 0) {
-      console.log("⚠️ No allowed fields provided for update");
       return res
         .status(400)
         .json({ error: "No valid fields provided for update" });
@@ -150,10 +136,8 @@ export const updateEnquiry = async (req: Request, res: Response) => {
       new: true,
     });
 
-    console.log("✅ Update Successful:", updated);
     res.json(updated);
   } catch (err) {
-    console.error("❌ Error updating enquiry:", err);
     res.status(500).json({ error: "Failed to update enquiry" });
   }
 };
