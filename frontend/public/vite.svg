@@ -1,38 +1,19 @@
-<!-- cloudblitz-logo.svg -->
-<svg xmlns="http://www.w3.org/2000/svg" width="240" height="80" viewBox="0 0 240 80" role="img" aria-labelledby="title desc">
-  <title id="title">CloudBlitz</title>
-  <desc id="desc">CloudBlitz logo: gradient rounded-square mark with stylized C and lightning bolt</desc>
+<!-- cloudblitz-mark.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="m_title m_desc">
+  <title id="m_title">CloudBlitz mark</title>
+  <desc id="m_desc">Rounded circular mark with gradient and bolt</desc>
 
-  <!-- Background rounded square -->
   <defs>
-    <linearGradient id="g1" x1="0" x2="1">
+    <linearGradient id="g2" x1="0" x2="1">
       <stop offset="0" stop-color="#3b82f6"></stop>
       <stop offset="1" stop-color="#06b6d4"></stop>
     </linearGradient>
-
-    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-      <feOffset result="off" in="SourceAlpha" dx="0" dy="6"></feOffset>
-      <feGaussianBlur result="blur" in="off" stdDeviation="6"></feGaussianBlur>
-      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.15 0"></feColorMatrix>
-      <feBlend in="SourceGraphic" in2="blur" mode="normal"></feBlend>
-    </filter>
   </defs>
 
-  <!-- Rounded square mark -->
-  <g transform="translate(8,8)">
-    <rect x="0" y="0" rx="16" ry="16" width="64" height="64" fill="url(#g1)" filter="url(#shadow)"></rect>
-    <!-- inner highlight -->
-    <rect x="6" y="6" rx="12" ry="12" width="52" height="52" fill="rgba(255,255,255,0.06)"></rect>
-    <!-- Stylized C -->
-    <path d="M44 28c0 8.837-7.163 16-16 16-4.42 0-8.447-1.69-11.5-4.44" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" transform="translate(6,6)"></path>
-    <!-- Lightning bolt -->
-    <path d="M38 18 L30 36 L36 36 L28 52" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(6,6) rotate(-12 34 34)"></path>
-  </g>
-
-  <!-- Wordmark -->
-  <g transform="translate(88,44)" font-family="Inter, system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial" text-anchor="start">
-    <text x="0" y="-6" font-weight="700" font-size="20" fill="#0f172a">Cloud</text>
-    <text x="56" y="-6" font-weight="700" font-size="20" fill="#06b6d4">Blitz</text>
-    <text x="0" y="14" font-weight="500" font-size="11" fill="#64748b">Enquiry CRM</text>
-  </g>
+  <circle cx="64" cy="64" r="60" fill="url(#g2)"></circle>
+  <circle cx="64" cy="64" r="48" fill="rgba(255,255,255,0.06)"></circle>
+  <!-- C -->
+  <path d="M84 64c0 11.046-8.954 20-20 20-5.51 0-10.52-2.11-14.29-5.55" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" transform="translate(0,0)"></path>
+  <!-- Bolt (centered) -->
+  <path d="M70 50 L58 78 L66 78 L54 100" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" transform="rotate(-10 64 74)"></path>
 </svg>
