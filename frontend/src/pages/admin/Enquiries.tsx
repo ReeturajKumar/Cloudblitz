@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Search, Eye, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import api from "../../services/api";
 import { toast } from "react-toastify";
@@ -30,6 +30,14 @@ const EnquiryPage = () => {
   });
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
+
+  // Add refresh trigger state
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  // Create refresh function
+  const refreshAll = useCallback(() => {
+    setRefreshTrigger((prev) => prev + 1);
+  }, []);
 
   const fetchGlobalStats = async () => {
     try {
@@ -68,10 +76,11 @@ const EnquiryPage = () => {
     }
   };
 
+  // Single useEffect with refreshTrigger dependency
   useEffect(() => {
     fetchEnquiries();
     fetchGlobalStats();
-  }, [search]);
+  }, [search, refreshTrigger]); // Added refreshTrigger here
 
   const handleDelete = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this enquiry?"))
@@ -79,8 +88,7 @@ const EnquiryPage = () => {
     try {
       await api.delete(`/enquiries/${id}`);
       toast.success("Enquiry deleted successfully");
-      fetchEnquiries(page);
-      fetchGlobalStats();
+      refreshAll(); // Use refreshAll instead of individual fetches
     } catch (err) {
       toast.error("Failed to delete enquiry");
     }
@@ -128,6 +136,7 @@ const EnquiryPage = () => {
       iconBg: "bg-green-500",
     },
   ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -143,20 +152,13 @@ const EnquiryPage = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => fetchEnquiries(page)}
-              className="px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all flex items-center gap-2 cursor-pointer"
-            >
-              Refresh
-            </button>
-
             {isAdmin && (
-              <NewEnquiryDialog onCreated={() => fetchEnquiries(page)} />
+              <NewEnquiryDialog onCreated={refreshAll} /> // Use refreshAll here
             )}
           </div>
         </div>
 
-        {/* Stats */}
+        {/* Stats - These will now update instantly */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           {cards.map((card, index) => (
             <div
@@ -336,7 +338,7 @@ const EnquiryPage = () => {
         <EnquiryDetailsDialog
           enquiry={selectedEnquiry}
           onClose={() => setSelectedEnquiry(null)}
-          onUpdated={() => fetchEnquiries(page)}
+          onUpdated={refreshAll} // Use refreshAll here
         />
       )}
     </div>
