@@ -35,7 +35,6 @@ const Dashboard = () => {
   }, []);
   const isAdmin = user?.role === "admin";
 
-  // ✅ Fetch Stats
   const fetchStats = useCallback(async () => {
     try {
       const res = await api.get("/enquiries?limit=10000&page=1");
@@ -112,11 +111,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchStats();
-  }, [fetchStats, refreshTrigger]); // 🔁 auto-refresh when trigger updates
+  }, [fetchStats, refreshTrigger]);
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex flex-wrap justify-between items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold mb-1">
@@ -129,7 +127,7 @@ const Dashboard = () => {
 
         {isAdmin && <NewEnquiryDialog onCreated={refreshAll} />}
       </div>
-      {/* Stats */}
+
       {loading ? (
         <p className="text-gray-500 animate-pulse">Loading stats...</p>
       ) : (
@@ -163,7 +161,7 @@ const Dashboard = () => {
           <StatusDistributionChart refreshTrigger={refreshTrigger} />
         </div>
       </div>
-      {/* Bottom Section: Enquiries & Activity */}
+      {/* Enquiries & Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
         <div className="lg:col-span-2">
           <RecentEnquiries
@@ -175,6 +173,7 @@ const Dashboard = () => {
           <RecentActivity refreshTrigger={refreshTrigger} />
         </div>
       </div>
+      {/* Team PerFormance */}
       {user?.role === "admin" && (
         <TeamPerformance refreshTrigger={refreshTrigger} />
       )}

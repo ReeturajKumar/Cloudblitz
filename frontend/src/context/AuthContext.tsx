@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import api from "../services/api";
 import { AuthContext } from "./auth-context";
@@ -25,7 +26,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Load token & validate user on app start
+  // Load token & validate user on app start
   useEffect(() => {
     const initializeAuth = async () => {
       const storedToken = localStorage.getItem("token");
@@ -56,12 +57,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-
-    // Clear auth state
     setUser(null);
     setToken(null);
-
-    // Redirect to login page
     window.location.href = "/login";
   };
 

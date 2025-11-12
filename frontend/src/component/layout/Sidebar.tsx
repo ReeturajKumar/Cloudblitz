@@ -5,7 +5,7 @@ import { useAuth } from "../../context/useAuth";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, logout } = useAuth(); // Add logout from useAuth
+  const { user, logout } = useAuth();
   const isAdmin = user?.role === "admin";
 
   const navItems = [
@@ -17,7 +17,7 @@ const Sidebar = () => {
   // Logout handler
   const handleLogout = () => {
     logout();
-    setIsOpen(false); // Close sidebar on mobile after logout
+    setIsOpen(false);
   };
 
   return (

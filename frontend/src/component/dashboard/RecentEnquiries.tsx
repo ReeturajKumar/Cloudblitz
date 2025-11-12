@@ -21,7 +21,7 @@ export function RecentEnquiries({
   const [selectedEnquiry, setSelectedEnquiry] = useState<any | null>(null);
   const navigate = useNavigate();
 
-  // ✅ Fetch the most recent 5 enquiries
+  // Fetch the most recent enquiries
   const fetchRecent = async () => {
     try {
       setLoading(true);
@@ -47,7 +47,7 @@ export function RecentEnquiries({
     fetchRecent();
   }, [refreshTrigger]);
 
-  // 🟢 Helper: Status Badge styling
+  // Helper: Status Badge styling
   const getStatusBadge = (status: string) => {
     const statusClasses: Record<string, string> = {
       new: "bg-blue-100 text-blue-700",
@@ -145,9 +145,9 @@ export function RecentEnquiries({
           enquiry={selectedEnquiry}
           onClose={() => setSelectedEnquiry(null)}
           onUpdated={() => {
-            fetchRecent(); // ✅ Refresh recent enquiries
-            if (onUpdated) onUpdated(); // ✅ Trigger dashboard refresh
-          }} // ✅ instantly refresh section
+            fetchRecent();
+            if (onUpdated) onUpdated();
+          }}
         />
       )}
     </div>

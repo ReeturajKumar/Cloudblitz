@@ -25,7 +25,7 @@ import { useAuth } from "../../context/useAuth";
 interface Props {
   enquiry: any;
   onClose: () => void;
-  onUpdated?: () => void; // callback to refresh parent data
+  onUpdated?: () => void;
 }
 
 export const EnquiryDetailsDialog = ({
@@ -44,7 +44,7 @@ export const EnquiryDetailsDialog = ({
     setEditableEnquiry(enquiry);
   }, [enquiry]);
 
-  // ✅ Fetch staff list (only for admin)
+  // Fetch staff list (only for admin)
   useEffect(() => {
     if (!isAdmin) return;
 
@@ -52,7 +52,6 @@ export const EnquiryDetailsDialog = ({
       if (!isAdmin) return;
       try {
         const res = await api.get("/users");
-        // Handle both { data: [] } or direct [] API responses
         const users = Array.isArray(res.data) ? res.data : res.data.data || [];
         const staff = users.filter((u: any) => u.role === "staff");
         setStaffList(staff);
@@ -64,7 +63,6 @@ export const EnquiryDetailsDialog = ({
     fetchStaff();
   }, [isAdmin]);
 
-  // ✅ Update Enquiry (Admin only)
   const handleUpdate = async () => {
     try {
       setSaving(true);
@@ -101,35 +99,28 @@ export const EnquiryDetailsDialog = ({
         </DialogHeader>
 
         <div className="grid gap-3 py-2">
-          {/* Name */}
           <div>
             <Label>Name</Label>
             <Input value={editableEnquiry.customerName} disabled />
           </div>
 
-          {/* Email */}
           <div>
             <Label>Email</Label>
             <Input value={editableEnquiry.email} disabled />
           </div>
 
-          {/* Phone */}
           <div>
             <Label>Phone</Label>
             <Input value={editableEnquiry.phone} disabled />
           </div>
 
-          {/* Message */}
           <div>
             <Label>Message</Label>
             <Input value={editableEnquiry.message} disabled />
           </div>
 
-          {/* Admin Editable Section */}
-          {/* ✅ Editable Section Based on Role */}
           {isAdmin ? (
             <>
-              {/* 🟦 Admin: can update both status and assign staff */}
               <div>
                 <Label>Status</Label>
                 <Select
@@ -188,7 +179,6 @@ export const EnquiryDetailsDialog = ({
           ) : user?.role === "staff" &&
             editableEnquiry.assignedTo?._id === user?._id ? (
             <>
-              {/* 🟧 Staff: can update ONLY their assigned enquiry's status */}
               <div>
                 <Label>Status</Label>
                 <Select
@@ -217,7 +207,6 @@ export const EnquiryDetailsDialog = ({
             </>
           ) : (
             <>
-              {/* 🩶 View-Only for others */}
               <div>
                 <Label>Status</Label>
                 <Input

@@ -12,7 +12,7 @@ export const StatusDistributionChart = ({
 }: StatusDistributionChartProps) => {
   const [data, setData] = useState<any[]>([]);
 
-  const COLORS = ["#3b82f6", "#f59e0b", "#10b981"]; // new, in_progress, closed
+  const COLORS = ["#3b82f6", "#f59e0b", "#10b981"];
 
   useEffect(() => {
     const fetchStatusData = async () => {
@@ -104,7 +104,6 @@ export const StatusDistributionChart = ({
           </ResponsiveContainer>
         </div>
 
-        {/* ✅ Clean inline legend */}
         <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm">
           {data.map((item, i) => (
             <div key={i} className="flex items-center gap-2">
@@ -120,7 +119,7 @@ export const StatusDistributionChart = ({
           ))}
         </div>
 
-        {/* ✅ Empty state */}
+        {/* Empty state */}
         {data.every((d) => d.value === 0) && (
           <p className="text-center text-sm text-gray-500 mt-4">
             No enquiries available to display.

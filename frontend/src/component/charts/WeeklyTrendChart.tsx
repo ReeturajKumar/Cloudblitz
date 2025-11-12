@@ -34,10 +34,7 @@ export const WeeklyTrendChart = ({
       const res = await api.get("/enquiries?limit=10000&page=1");
       const all = res.data.data || [];
 
-      // ✅ Filter out deleted enquiries
       const active = all.filter((e: any) => !e.deleted);
-
-      // ✅ Create dataset for the past 7 days
       const last7Days = Array.from({ length: 7 }).map((_, i) => {
         const date = new Date();
         date.setDate(date.getDate() - (6 - i));
@@ -52,7 +49,7 @@ export const WeeklyTrendChart = ({
           d1.getMonth() === d2.getMonth() &&
           d1.getFullYear() === d2.getFullYear();
 
-        // 🧮 Count created vs closed on that date
+        // Count created vs closed on that date
         const enquiries = active.filter((e: any) =>
           isSameDay(new Date(e.createdAt), date)
         ).length;
@@ -73,7 +70,6 @@ export const WeeklyTrendChart = ({
     }
   };
 
-  // 🔁 Re-fetch whenever refreshTrigger changes
   useEffect(() => {
     fetchWeeklyData();
   }, [refreshTrigger]);

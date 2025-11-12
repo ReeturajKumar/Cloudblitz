@@ -35,8 +35,6 @@ export function NewEnquiryDialog({ onCreated }: NewEnquiryDialogProps) {
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -87,22 +85,16 @@ export function NewEnquiryDialog({ onCreated }: NewEnquiryDialogProps) {
     e.preventDefault();
 
     if (!validateForm()) {
-      return; // Don't show toast, just show field errors
+      return;
     }
 
     try {
       setLoading(true);
       await api.post("/enquiries", formData);
       toast.success("Enquiry created successfully!");
-
-      // reset form
       setFormData({ customerName: "", email: "", phone: "", message: "" });
       setErrors({});
-
-      // auto-close dialog
       setOpen(false);
-
-      // refresh stats in dashboard
       onCreated();
     } catch (err) {
       console.error(err);

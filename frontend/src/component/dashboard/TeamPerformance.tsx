@@ -23,7 +23,7 @@ export const TeamPerformance = ({
       }
     };
     fetchTopPerformers();
-  }, [refreshTrigger]); // 🔁 Refresh when trigger changes
+  }, [refreshTrigger]);
 
   return (
     <div className="bg-white p-5 rounded-xl shadow mt-6">
