@@ -1,4 +1,4 @@
-# 📋 CloudBlitz - Enquiry Management System
+# CloudBlitz - Enquiry Management System
 
 <div align="center">
 
@@ -6,9 +6,9 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
-**🚀 AI-First Fullstack CRM for Enquiry Tracking & Team Management**
+**AI-First Fullstack CRM for Enquiry Tracking & Team Management**
 
-[Live Demo](https://cloudblitz-gray.vercel.app) • [API Documentation](#-api-documentation) • [Report Bug](https://github.com/ReeturajKumar/Cloudblitz/issues) • [Request Feature](https://github.com/ReeturajKumar/Cloudblitz/issues)
+[Live Demo](https://cloudblitz-gray.vercel.app) • [API Documentation](#api-documentation) • [Report Bug](https://github.com/ReeturajKumar/Cloudblitz/issues) • [Request Feature](https://github.com/ReeturajKumar/Cloudblitz/issues)
 
 ---
 
@@ -22,65 +22,61 @@
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [System Architecture](#-system-architecture)
-- [Getting Started](#-getting-started)
-- [User Roles](#-user-roles--permissions)
-- [API Documentation](#-api-documentation)
-- [Testing](#-testing)
-- [Deployment](#-deployment)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [System Architecture](#system-architecture)
+- [Getting Started](#getting-started)
+- [User Roles](#user-roles-and-permissions)
+- [API Documentation](#api-documentation)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
-## 🎯 Overview
+## Overview
 
 CloudBlitz is a modern, full-stack **Enquiry Management System** built with React, TypeScript, Node.js, and MongoDB. Designed for efficient customer enquiry tracking and team collaboration with role-based access control, real-time analytics, and comprehensive team management.
 
-### ✨ Key Highlights
+### Key Highlights
 
-- 🔐 **JWT-based Authentication** with role-based access control
-- 📊 **Real-time Analytics Dashboard** with interactive charts
-- 👥 **Team Management** with user and enquiry assignment
-- 🎨 **Modern UI/UX** using React 18, TypeScript & Tailwind CSS
-- 🧪 **Fully Tested** with Jest & Supertest (58%+ coverage)
-- 🐳 **Docker Ready** for containerized deployment
-- ☁️ **Production Ready** - Deployed on Vercel & Render
+- JWT-based Authentication with role-based access control
+- Real-time Analytics Dashboard with interactive charts
+- Team Management with user and enquiry assignment
+- Modern UI/UX using React 18, TypeScript & Tailwind CSS
+- Fully Tested with Jest & Supertest (58%+ coverage)
+- Docker Ready for containerized deployment
+- Production Ready - Deployed on Vercel & Render
 
 ---
 
-## ⚡ Features
+## Features
 
-### 🔐 Authentication & Authorization
-
+### Authentication & Authorization
 - Secure JWT-based authentication
 - Role-based access control (Admin & Staff)
 - Protected routes and API endpoints
 - Session persistence with auto token refresh
 
-### 📋 Enquiry Management
-
+### Enquiry Management
 - Complete CRUD operations for enquiries
 - Status tracking: New, In Progress, Closed
 - Staff assignment and reassignment
 - Advanced filtering and search capabilities
 - Detailed enquiry information management
 
-### 👥 User Management
-
+### User Management
 - Create and manage user accounts (Admin only)
 - Role assignment (Admin/Staff)
 - User activity tracking
 - Team performance monitoring
 
-### 📊 Analytics & Dashboard
-
+### Analytics & Dashboard
 - Weekly trend charts (Created vs Closed)
 - Status distribution visualization
 - Top performer leaderboard
@@ -89,10 +85,9 @@ CloudBlitz is a modern, full-stack **Enquiry Management System** built with Reac
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Frontend
-
 ![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?logo=vite&logoColor=white)
@@ -109,7 +104,6 @@ CloudBlitz is a modern, full-stack **Enquiry Management System** built with Reac
 - **Axios** - HTTP client
 
 ### Backend
-
 ![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?logo=node.js&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-4.x-000000?logo=express&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-7.x-47A248?logo=mongodb&logoColor=white)
@@ -124,7 +118,6 @@ CloudBlitz is a modern, full-stack **Enquiry Management System** built with Reac
 - **Bcrypt** - Password hashing
 
 ### DevOps & Testing
-
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)
 ![Jest](https://img.shields.io/badge/Jest-29.x-C21325?logo=jest&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?logo=vercel&logoColor=white)
@@ -138,7 +131,7 @@ CloudBlitz is a modern, full-stack **Enquiry Management System** built with Reac
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Cloudblitz/
@@ -223,7 +216,7 @@ Cloudblitz/
 
 ---
 
-## 🏗 System Architecture
+## System Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -273,17 +266,16 @@ Cloudblitz/
 ```
 
 **Data Flow:**
-
-1. User interacts with React frontend (Vercel)
+1. User interacts with React frontend hosted on Vercel
 2. API requests sent via Axios with JWT token
-3. Express server validates JWT & role permissions
+3. Express server validates JWT and role permissions
 4. Controllers process business logic
 5. Mongoose interacts with MongoDB Atlas
 6. Response sent back through the chain
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -297,14 +289,14 @@ Ensure you have the following installed:
 
 ### Installation
 
-#### 1️⃣ Clone Repository
+#### 1. Clone Repository
 
 ```bash
 git clone https://github.com/ReeturajKumar/Cloudblitz.git
 cd Cloudblitz
 ```
 
-#### 2️⃣ Backend Setup
+#### 2. Backend Setup
 
 ```bash
 cd backend
@@ -331,7 +323,7 @@ npm run dev
 
 **Verify:** Visit http://localhost:5000/api/health
 
-#### 3️⃣ Frontend Setup
+#### 3. Frontend Setup
 
 ```bash
 cd ../frontend
@@ -353,7 +345,7 @@ npm run dev
 
 **Access:** http://localhost:5173
 
-#### 4️⃣ Docker Setup (Optional)
+#### 4. Docker Setup (Optional)
 
 ```bash
 # From project root
@@ -368,23 +360,23 @@ docker-compose down
 
 ---
 
-## 👥 User Roles & Permissions
+## User Roles and Permissions
 
-| Feature                 | Admin  | Staff       |
-| ----------------------- | ------ | ----------- |
-| View All Enquiries      | ✅ Yes | ❌ No       |
-| View Assigned Enquiries | ✅ Yes | ✅ Yes      |
-| Create Enquiry          | ✅ Yes | ❌ No       |
-| Edit Enquiry            | ✅ All | ⚠️ Own Only |
-| Assign Enquiry          | ✅ Yes | ❌ No       |
-| Delete Enquiry          | ✅ Yes | ❌ No       |
-| Manage Users            | ✅ Yes | ❌ No       |
-| View Full Analytics     | ✅ Yes | ⚠️ Limited  |
-| Change Any Status       | ✅ Yes | ⚠️ Own Only |
+| Feature | Admin | Staff |
+|---------|-------|-------|
+| View All Enquiries | Yes | No |
+| View Assigned Enquiries | Yes | Yes |
+| Create Enquiry | Yes | No |
+| Edit Enquiry | All | Own Only |
+| Assign Enquiry | Yes | No |
+| Delete Enquiry | Yes | No |
+| Manage Users | Yes | No |
+| View Full Analytics | Yes | Limited |
+| Change Any Status | Yes | Own Only |
 
 ---
 
-## 📚 API Documentation
+## API Documentation
 
 ### Base URLs
 
@@ -394,7 +386,6 @@ docker-compose down
 ### Authentication
 
 #### Register User
-
 ```http
 POST /auth/register
 Content-Type: application/json
@@ -408,7 +399,6 @@ Content-Type: application/json
 ```
 
 **Response (201):**
-
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -422,7 +412,6 @@ Content-Type: application/json
 ```
 
 #### Login
-
 ```http
 POST /auth/login
 Content-Type: application/json
@@ -434,7 +423,6 @@ Content-Type: application/json
 ```
 
 #### Get Current User
-
 ```http
 GET /auth/me
 Authorization: Bearer <your_jwt_token>
@@ -443,14 +431,12 @@ Authorization: Bearer <your_jwt_token>
 ### Enquiries
 
 #### Get All Enquiries
-
 ```http
 GET /enquiries
 Authorization: Bearer <token>
 ```
 
 **Response (200):**
-
 ```json
 {
   "success": true,
@@ -470,7 +456,6 @@ Authorization: Bearer <token>
 ```
 
 #### Create Enquiry (Admin Only)
-
 ```http
 POST /enquiries
 Authorization: Bearer <token>
@@ -485,7 +470,6 @@ Content-Type: application/json
 ```
 
 #### Update Enquiry
-
 ```http
 PUT /enquiries/:id
 Authorization: Bearer <token>
@@ -498,7 +482,6 @@ Content-Type: application/json
 ```
 
 #### Delete Enquiry (Admin Only)
-
 ```http
 DELETE /enquiries/:id
 Authorization: Bearer <token>
@@ -507,14 +490,12 @@ Authorization: Bearer <token>
 ### Users (Admin Only)
 
 #### Get All Users
-
 ```http
 GET /users
 Authorization: Bearer <token>
 ```
 
 #### Create User
-
 ```http
 POST /users
 Authorization: Bearer <token>
@@ -529,7 +510,6 @@ Content-Type: application/json
 ```
 
 #### Update User
-
 ```http
 PUT /users/:id
 Authorization: Bearer <token>
@@ -542,7 +522,6 @@ Content-Type: application/json
 ```
 
 #### Delete User
-
 ```http
 DELETE /users/:id
 Authorization: Bearer <token>
@@ -551,21 +530,18 @@ Authorization: Bearer <token>
 ### Analytics
 
 #### Top Performers
-
 ```http
 GET /analytics/top-performers
 Authorization: Bearer <token>
 ```
 
 #### Dashboard Statistics
-
 ```http
 GET /analytics/stats
 Authorization: Bearer <token>
 ```
 
 **Response (200):**
-
 ```json
 {
   "totalEnquiries": 150,
@@ -579,7 +555,7 @@ Authorization: Bearer <token>
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ### Run Tests
 
@@ -598,26 +574,26 @@ npm run test:watch
 
 ### Test Coverage
 
-| Component   | Statements | Branches | Functions | Lines   |
-| ----------- | ---------- | -------- | --------- | ------- |
-| **Overall** | 58.64%     | 26.96%   | 45.45%    | 57.91%  |
-| app.ts      | 95.00%     | 50.00%   | 100.00%   | 94.73%  |
-| Controllers | 40.99%     | 22.66%   | 28.57%    | 38.12%  |
-| Middleware  | 69.56%     | 50.00%   | 66.66%    | 69.56%  |
-| Models      | 100.00%    | 100.00%  | 100.00%   | 100.00% |
-| Routes      | 83.72%     | 100.00%  | 0.00%     | 83.72%  |
+| Component | Statements | Branches | Functions | Lines |
+|-----------|-----------|----------|-----------|-------|
+| **Overall** | 58.64% | 26.96% | 45.45% | 57.91% |
+| app.ts | 95.00% | 50.00% | 100.00% | 94.73% |
+| Controllers | 40.99% | 22.66% | 28.57% | 38.12% |
+| Middleware | 69.56% | 50.00% | 66.66% | 69.56% |
+| Models | 100.00% | 100.00% | 100.00% | 100.00% |
+| Routes | 83.72% | 100.00% | 0.00% | 83.72% |
 
 ### Test Suites
 
-- ✅ Health Check API
-- ✅ Authentication (Register, Login, JWT)
-- ✅ Enquiry CRUD Operations
-- ✅ User Management
-- ✅ Role-Based Access Control
+- Health Check API
+- Authentication (Register, Login, JWT)
+- Enquiry CRUD Operations
+- User Management
+- Role-Based Access Control
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 ### Frontend (Vercel)
 
@@ -652,46 +628,44 @@ npm run test:watch
 
 ---
 
-## 🌐 Live Deployment
+## Live Deployment
 
-| Service          | URL                                        | Status    |
-| ---------------- | ------------------------------------------ | --------- |
-| **Frontend**     | https://cloudblitz-gray.vercel.app         | ✅ Active |
-| **Backend API**  | https://cloudblitz.onrender.com            | ✅ Active |
-| **Health Check** | https://cloudblitz.onrender.com/api/health | ✅ Active |
-
----
-
-## 🛣 Roadmap
-
-### ✅ Completed
-
-- [x] JWT Authentication & Authorization
-- [x] Role-based Access Control
-- [x] Enquiry CRUD Operations
-- [x] User Management System
-- [x] Analytics Dashboard
-- [x] Responsive UI Design
-- [x] Testing Suite (58%+ coverage)
-- [x] Docker Configuration
-- [x] Production Deployment
-
-### 🚧 Planned
-
-- [ ] Email Notifications
-- [ ] Advanced Search & Filters
-- [ ] Export Reports (PDF/Excel)
-- [ ] WebSocket Real-time Updates
-- [ ] Audit Logging
-- [ ] Multi-language Support
-- [ ] Dark Mode
-- [ ] Mobile App (React Native)
+| Service | URL | Status |
+|---------|-----|--------|
+| **Frontend** | https://cloudblitz-gray.vercel.app | Active |
+| **Backend API** | https://cloudblitz.onrender.com | Active |
+| **Health Check** | https://cloudblitz.onrender.com/api/health | Active |
 
 ---
 
-## 🤝 Contributing
+## Roadmap
 
-Contributions are welcome! Please follow these steps:
+### Completed
+- JWT Authentication & Authorization
+- Role-based Access Control
+- Enquiry CRUD Operations
+- User Management System
+- Analytics Dashboard
+- Responsive UI Design
+- Testing Suite (58%+ coverage)
+- Docker Configuration
+- Production Deployment
+
+### Planned
+- Email Notifications
+- Advanced Search & Filters
+- Export Reports (PDF/Excel)
+- WebSocket Real-time Updates
+- Audit Logging
+- Multi-language Support
+- Dark Mode
+- Mobile App (React Native)
+
+---
+
+## Contributing
+
+Contributions are welcome. Please follow these steps:
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/AmazingFeature`
@@ -708,24 +682,24 @@ Contributions are welcome! Please follow these steps:
 
 ---
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 👨‍💻 Developer
+## Developer
 
 **Reeturaj Kumar**  
 AI-First Fullstack Developer
 
-- 📧 Email: reeturajvats587@gmail.com
-- 💼 LinkedIn: [linkedin.com/in/reeturajkumar](https://linkedin.com/in/reeturajkumar)
-- 🐙 GitHub: [@ReeturajKumar](https://github.com/ReeturajKumar)
+- Email: reeturajvats587@gmail.com
+- LinkedIn: [linkedin.com/in/reeturajkumar](https://linkedin.com/in/reeturajkumar)
+- GitHub: [@ReeturajKumar](https://github.com/ReeturajKumar)
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Cursor AI](https://cursor.sh/) - AI-powered code editor
 - [GitHub Copilot](https://github.com/features/copilot) - AI pair programmer
@@ -737,19 +711,19 @@ AI-First Fullstack Developer
 
 ---
 
-## 📞 Support
+## Support
 
-- 📖 [Documentation](https://github.com/ReeturajKumar/Cloudblitz)
-- 🐛 [Report Issues](https://github.com/ReeturajKumar/Cloudblitz/issues)
-- 📧 [Email Support](mailto:reeturajvats587@gmail.com)
+- Documentation: [GitHub Repository](https://github.com/ReeturajKumar/Cloudblitz)
+- Report Issues: [GitHub Issues](https://github.com/ReeturajKumar/Cloudblitz/issues)
+- Email: [reeturajvats587@gmail.com](mailto:reeturajvats587@gmail.com)
 
 ---
 
 <div align="center">
 
-**⭐ If you find this project helpful, please give it a star on GitHub! ⭐**
+**If you find this project helpful, please give it a star on GitHub**
 
-Made with ❤️ by [Reeturaj Kumar](https://github.com/ReeturajKumar)
+Made with care by [Reeturaj Kumar](https://github.com/ReeturajKumar)
 
 ![GitHub Stars](https://img.shields.io/github/stars/ReeturajKumar/Cloudblitz?style=social)
 ![GitHub Forks](https://img.shields.io/github/forks/ReeturajKumar/Cloudblitz?style=social)
