@@ -31,7 +31,6 @@ const EnquiryPage = () => {
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
 
-  // Fetch All Enquiries once to calculate global stats
   const fetchGlobalStats = async () => {
     try {
       const res = await api.get("/enquiries?limit=10000");
@@ -50,7 +49,6 @@ const EnquiryPage = () => {
     }
   };
 
-  // ✅ Fetch Enquiries with pagination
   const fetchEnquiries = async (pageNum = 1) => {
     try {
       setLoading(true);
@@ -62,7 +60,6 @@ const EnquiryPage = () => {
       setEnquiries(active);
       setPage(res.data.page);
       setTotalPages(Math.ceil(res.data.total / res.data.limit));
-      // setTotalCount(res.data.total || 0); // ✅ store total enquiries count
     } catch (err) {
       console.error(err);
       toast.error("Failed to fetch enquiries");
@@ -76,7 +73,6 @@ const EnquiryPage = () => {
     fetchGlobalStats();
   }, [search]);
 
-  // ✅ Delete Enquiry
   const handleDelete = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this enquiry?"))
       return;
@@ -90,13 +86,12 @@ const EnquiryPage = () => {
     }
   };
 
-  // ✅ Filter by status (tab)
+  // Filter by status
   const filteredEnquiries =
     selectedTab === "all"
       ? enquiries
       : enquiries.filter((e) => e.status === selectedTab);
 
-  // ✅ Status color styling
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       new: "bg-blue-100 text-blue-700 border-blue-200",
@@ -106,7 +101,7 @@ const EnquiryPage = () => {
     return colors[status] || "bg-gray-100 text-gray-700 border-gray-200";
   };
 
-  // ✅ Stats counts
+  // Stats counts
   const cards = [
     {
       label: "Total Enquiries",
