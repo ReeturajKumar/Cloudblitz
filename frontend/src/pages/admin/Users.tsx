@@ -39,7 +39,7 @@ const UsersPage = () => {
   const isAdmin = user?.role === "admin";
 
   const [users, setUsers] = useState<any[]>([]);
-  const [allUsers, setAllUsers] = useState<any[]>([]); // Store all users for search
+  const [allUsers, setAllUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
@@ -57,13 +57,10 @@ const UsersPage = () => {
     role: "staff",
   });
 
-  // ✅ Fetch Users - Fixed to handle API response properly
   const fetchUsers = async () => {
     try {
       setLoading(true);
       const res = await api.get(`/users?page=${page}&limit=${limit}`);
-
-      // Handle different API response structures
       let usersData = [];
       if (Array.isArray(res.data)) {
         usersData = res.data;
@@ -74,7 +71,7 @@ const UsersPage = () => {
       }
 
       setUsers(usersData);
-      setAllUsers(usersData); // Store for search functionality
+      setAllUsers(usersData);
       setTotal(res.data.total || usersData.length);
     } catch (err) {
       console.error("Failed to fetch users:", err);
@@ -84,10 +81,10 @@ const UsersPage = () => {
     }
   };
 
-  // Fetch all users for search (optional - if your API supports it)
+  // Fetch all users for search
   const fetchAllUsers = async () => {
     try {
-      const res = await api.get("/users?limit=1000"); // Get all users for search
+      const res = await api.get("/users?limit=1000");
       let allUsersData = [];
 
       if (Array.isArray(res.data)) {
@@ -106,10 +103,9 @@ const UsersPage = () => {
 
   useEffect(() => {
     fetchUsers();
-    fetchAllUsers(); // Fetch all users for search functionality
+    fetchAllUsers();
   }, [page]);
 
-  // ✅ Delete User - Fixed to refresh data properly
   const handleDelete = async (id: string) => {
     if (!isAdmin) {
       toast.warning("Only admin can delete users");
@@ -119,12 +115,8 @@ const UsersPage = () => {
 
     try {
       await api.delete(`/users/${id}`);
-
-      // Refresh both current page data and all users data
       await fetchUsers();
       await fetchAllUsers();
-
-      // Also update local state immediately for better UX
       setUsers((prev) => prev.filter((u) => u._id !== id));
       setAllUsers((prev) => prev.filter((u) => u._id !== id));
       setTotal((prev) => prev - 1);
@@ -136,7 +128,6 @@ const UsersPage = () => {
     }
   };
 
-  // ✅ Create User - Fixed to handle pagination
   const handleAddUser = async () => {
     if (!isAdmin) {
       toast.warning("Only admin can create users");
@@ -151,16 +142,11 @@ const UsersPage = () => {
     try {
       const res = await api.post("/users", formData);
       const newUser = res.data.data || res.data;
-
-      // Refresh data from server to ensure consistency
       await fetchUsers();
       await fetchAllUsers();
-
-      // If we're not on page 1, go to page 1 to see the new user
       if (page !== 1) {
         setPage(1);
       } else {
-        // If on page 1, update local state immediately
         setUsers((prev) => [newUser, ...prev.slice(0, limit - 1)]);
         setAllUsers((prev) => [newUser, ...prev]);
       }
@@ -175,7 +161,6 @@ const UsersPage = () => {
     }
   };
 
-  // ✅ Edit User - Fixed to refresh data properly
   const handleEditUser = async () => {
     if (!isAdmin) {
       toast.warning("Only admin can edit users");
@@ -189,8 +174,6 @@ const UsersPage = () => {
 
     try {
       await api.put(`/users/${editUser._id}`, formData);
-
-      // Refresh data from server
       await fetchUsers();
       await fetchAllUsers();
 
@@ -204,7 +187,6 @@ const UsersPage = () => {
     }
   };
 
-  // ✅ Populate form for edit
   const openEditModal = (user: any) => {
     if (!isAdmin) {
       toast.warning("Only admin can edit users");
@@ -214,13 +196,12 @@ const UsersPage = () => {
     setFormData({
       name: user.name,
       email: user.email,
-      password: "", // Don't pre-fill password
+      password: "",
       role: user.role,
     });
     setShowEditModal(true);
   };
 
-  // ✅ Filtered users (search) - Use allUsers for comprehensive search
   const filteredUsers = allUsers.filter(
     (u) =>
       u.name?.toLowerCase().includes(search.toLowerCase()) ||
@@ -283,7 +264,7 @@ const UsersPage = () => {
           </div>
         </div>
 
-        {/* Stats Section - Fixed to use allUsers for accurate counts */}
+        {/* Stats Section  */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {/* Total Users */}
           <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between">
@@ -340,7 +321,7 @@ const UsersPage = () => {
                       const diff =
                         (Date.now() - created.getTime()) /
                         (1000 * 60 * 60 * 24);
-                      return diff <= 7; // last 7 days
+                      return diff <= 7;
                     }).length
                   }
                 </h3>
@@ -561,15 +542,6 @@ const UsersPage = () => {
               }
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
-            {/* <input
-              type="password"
-              placeholder="New Password (leave blank to keep current)"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            /> */}
             <select
               value={formData.role}
               onChange={(e) =>
