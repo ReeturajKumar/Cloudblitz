@@ -338,7 +338,7 @@ const EnquiryPage = () => {
         <EnquiryDetailsDialog
           enquiry={selectedEnquiry}
           onClose={() => setSelectedEnquiry(null)}
-          onUpdated={refreshAll} // Use refreshAll here
+          onUpdated={refreshAll}
         />
       )}
     </div>

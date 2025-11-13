@@ -35,6 +35,10 @@ export const EnquiryDetailsDialog = ({
 }: Props) => {
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
+  const isStaff = user?.role === "staff";
+
+  // NEW: Track if user info is loaded
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
 
   const [editableEnquiry, setEditableEnquiry] = useState(enquiry);
   const [staffList, setStaffList] = useState<any[]>([]);
@@ -63,6 +67,10 @@ export const EnquiryDetailsDialog = ({
     fetchStaff();
   }, [isAdmin]);
 
+  useEffect(() => {
+    if (user) setIsUserLoaded(true);
+  }, [user]);
+
   const handleUpdate = async () => {
     try {
       setSaving(true);
@@ -75,8 +83,7 @@ export const EnquiryDetailsDialog = ({
 
       toast.success("Enquiry updated successfully");
 
-      // ✅ Trigger both parent refresh & close dialog
-      if (onUpdated) onUpdated(); // 🔥 THIS triggers RecentEnquiries + Dashboard
+      if (onUpdated) onUpdated();
       onClose();
     } catch (err) {
       console.error(err);
@@ -89,162 +96,152 @@ export const EnquiryDetailsDialog = ({
   return (
     <Dialog open={!!enquiry} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[400px]">
-        <DialogHeader>
-          <DialogTitle>Enquiry Details</DialogTitle>
-          <DialogDescription>
-            {isAdmin
-              ? "Admins can change status or assign this enquiry."
-              : "You can only view the enquiry details."}
-          </DialogDescription>
-        </DialogHeader>
+        {!isUserLoaded ? (
+          <div className="p-6 text-center text-gray-500">Loading...</div>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>Enquiry Details</DialogTitle>
+              <DialogDescription>
+                {isAdmin
+                  ? "Admins can change status or assign this enquiry."
+                  : "You can only view the enquiry details."}
+              </DialogDescription>
+            </DialogHeader>
 
-        <div className="grid gap-3 py-2">
-          <div>
-            <Label>Name</Label>
-            <Input value={editableEnquiry.customerName} disabled />
-          </div>
-
-          <div>
-            <Label>Email</Label>
-            <Input value={editableEnquiry.email} disabled />
-          </div>
-
-          <div>
-            <Label>Phone</Label>
-            <Input value={editableEnquiry.phone} disabled />
-          </div>
-
-          <div>
-            <Label>Message</Label>
-            <Input value={editableEnquiry.message} disabled />
-          </div>
-
-          {isAdmin ? (
-            <>
+            <div className="grid gap-3 py-2">
               <div>
-                <Label>Status</Label>
-                <Select
-                  value={editableEnquiry.status}
-                  onValueChange={(value) =>
-                    setEditableEnquiry({ ...editableEnquiry, status: value })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="new">New</SelectItem>
-                    <SelectItem value="in_progress">In Progress</SelectItem>
-                    <SelectItem value="closed">Closed</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label>Name</Label>
+                <Input value={editableEnquiry.customerName} disabled />
               </div>
 
               <div>
-                <Label>Assigned To</Label>
-                <Select
-                  value={editableEnquiry.assignedTo?._id || ""}
-                  onValueChange={(value) =>
-                    setEditableEnquiry({
-                      ...editableEnquiry,
-                      assignedTo: staffList.find((s) => s._id === value),
-                    })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={
-                        editableEnquiry.assignedTo
-                          ? editableEnquiry.assignedTo.name
-                          : "Select staff"
+                <Label>Email</Label>
+                <Input value={editableEnquiry.email} disabled />
+              </div>
+
+              <div>
+                <Label>Phone</Label>
+                <Input value={editableEnquiry.phone} disabled />
+              </div>
+
+              <div>
+                <Label>Message</Label>
+                <Input value={editableEnquiry.message} disabled />
+              </div>
+              {isAdmin || isStaff ? (
+                <>
+                  {/* STATUS — enabled for BOTH admin & staff */}
+                  <div>
+                    <Label>Status</Label>
+                    <Select
+                      value={editableEnquiry.status}
+                      onValueChange={(value) =>
+                        setEditableEnquiry({
+                          ...editableEnquiry,
+                          status: value,
+                        })
                       }
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {staffList.length > 0 ? (
-                      staffList.map((s) => (
-                        <SelectItem key={s._id} value={s._id}>
-                          {s.name}
-                        </SelectItem>
-                      ))
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="in_progress">In Progress</SelectItem>
+                        <SelectItem value="closed">Closed</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* ASSIGNED TO — only enabled for ADMIN */}
+                  <div>
+                    <Label>Assigned To</Label>
+
+                    {isAdmin ? (
+                      <Select
+                        value={editableEnquiry.assignedTo?._id || ""}
+                        onValueChange={(value) =>
+                          setEditableEnquiry({
+                            ...editableEnquiry,
+                            assignedTo: staffList.find((s) => s._id === value),
+                          })
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={
+                              editableEnquiry.assignedTo
+                                ? editableEnquiry.assignedTo.name
+                                : "Select staff"
+                            }
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {staffList.length > 0 ? (
+                            staffList.map((s) => (
+                              <SelectItem key={s._id} value={s._id}>
+                                {s.name}
+                              </SelectItem>
+                            ))
+                          ) : (
+                            <SelectItem value="none" disabled>
+                              No staff available
+                            </SelectItem>
+                          )}
+                        </SelectContent>
+                      </Select>
                     ) : (
-                      <SelectItem value="none" disabled>
-                        No staff available
-                      </SelectItem>
+                      // Staff sees assignedTo but disabled
+                      <Input
+                        value={
+                          editableEnquiry.assignedTo?.name || "Not Assigned"
+                        }
+                        disabled
+                      />
                     )}
-                  </SelectContent>
-                </Select>
-              </div>
-            </>
-          ) : user?.role === "staff" &&
-            editableEnquiry.assignedTo?._id === user?._id ? (
-            <>
-              <div>
-                <Label>Status</Label>
-                <Select
-                  value={editableEnquiry.status}
-                  onValueChange={(value) =>
-                    setEditableEnquiry({ ...editableEnquiry, status: value })
-                  }
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* VIEW ONLY MODE (neither admin nor staff) */}
+                  <div>
+                    <Label>Status</Label>
+                    <Input
+                      value={editableEnquiry.status.replace("_", " ")}
+                      disabled
+                    />
+                  </div>
+                  <div>
+                    <Label>Assigned To</Label>
+                    <Input
+                      value={editableEnquiry.assignedTo?.name || "Not Assigned"}
+                      disabled
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={onClose}
+                className="cursor-pointer"
+              >
+                Close
+              </Button>
+              {(isAdmin || isStaff) && (
+                <Button
+                  onClick={handleUpdate}
+                  disabled={saving}
+                  className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="in_progress">In Progress</SelectItem>
-                    <SelectItem value="closed">Closed</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label>Assigned To</Label>
-                <Input
-                  value={editableEnquiry.assignedTo?.name || "Not Assigned"}
-                  disabled
-                />
-              </div>
-            </>
-          ) : (
-            <>
-              <div>
-                <Label>Status</Label>
-                <Input
-                  value={editableEnquiry.status.replace("_", " ")}
-                  disabled
-                />
-              </div>
-              <div>
-                <Label>Assigned To</Label>
-                <Input
-                  value={editableEnquiry.assignedTo?.name || "Not Assigned"}
-                  disabled
-                />
-              </div>
-            </>
-          )}
-        </div>
-
-        <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={onClose}
-            className="cursor-pointer"
-          >
-            Close
-          </Button>
-          {(isAdmin ||
-            (user?.role === "staff" &&
-              editableEnquiry.assignedTo?._id === user?._id)) && (
-            <Button
-              onClick={handleUpdate}
-              disabled={saving}
-              className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
-            >
-              {saving ? "Saving..." : "Update"}
-            </Button>
-          )}
-        </DialogFooter>
+                  {saving ? "Saving..." : "Update"}
+                </Button>
+              )}
+            </DialogFooter>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
