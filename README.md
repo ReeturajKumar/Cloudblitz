@@ -6,7 +6,7 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
-**AI-First Fullstack CRM for Enquiry Tracking & Team Management**
+**Fullstack CRM for Enquiry Tracking & Team Management**
 
 [Live Demo](https://cloudblitz-gray.vercel.app) • [API Documentation](#api-documentation) • [Report Bug](https://github.com/ReeturajKumar/Cloudblitz/issues) • [Request Feature](https://github.com/ReeturajKumar/Cloudblitz/issues)
 
@@ -676,7 +676,7 @@ npm run test:watch
 - Docker Configuration
 - Production Deployment
 
-### Planned
+<!-- ### Future Enhancements
 
 - Email Notifications
 - Advanced Search & Filters
@@ -685,7 +685,7 @@ npm run test:watch
 - Audit Logging
 - Multi-language Support
 - Dark Mode
-- Mobile App (React Native)
+- Mobile App (React Native) -->
 
 ---
 
@@ -717,7 +717,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Developer
 
 **Reeturaj Kumar**  
-AI-First Fullstack Developer
+Fullstack Developer
 
 - Email: reeturajvats587@gmail.com
 - LinkedIn: [linkedin.com/in/reeturajkumar](https://linkedin.com/in/reeturajkumar)

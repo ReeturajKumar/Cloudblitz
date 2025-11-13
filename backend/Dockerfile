@@ -4,7 +4,7 @@ WORKDIR /app
 RUN apk add --no-cache python3 make g++
 
 COPY package.json package-lock.json* yarn.lock* ./
-RUN npm install  # ✅ install dev dependencies too
+RUN npm install  
 
 COPY . .
 RUN npm run build

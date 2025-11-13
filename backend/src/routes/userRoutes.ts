@@ -10,7 +10,6 @@ import { requireRole } from "../middlewares/roles";
 
 const router = Router();
 
-// Admin-only routes
 router.get("/", auth, requireRole("admin"), getUsers);
 router.post("/", auth, requireRole("admin"), createUser);
 router.put("/:id", auth, requireRole("admin"), updateUser);

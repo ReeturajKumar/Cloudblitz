@@ -6,8 +6,8 @@ import userRoutes from "./routes/userRoutes";
 import analyticsRoutes from "./routes/analyticsRoutes";
 
 const allowedOrigins = [
-  "http://localhost:5173", // local dev
-  "https://cloudblitz-gray.vercel.app", // your deployed frontend
+  "http://localhost:5173",
+  "https://cloudblitz-gray.vercel.app",
 ];
 
 const app = express();
@@ -20,7 +20,7 @@ app.use(
         callback(new Error("Not allowed by CORS"));
       }
     },
-    credentials: true, // if you use cookies or auth tokens
+    credentials: true,
   })
 );
 app.use(express.json());

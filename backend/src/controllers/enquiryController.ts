@@ -29,17 +29,15 @@ export const getEnquiries = async (req: Request, res: Response) => {
 
     const query: any = {};
 
-    // 🔹 Filter by status
+    // Filter
     if (status && status !== "All") {
       query.status = status;
     }
 
-    // 🔹 Filter by assignedTo (for admin to see by staff)
     if (assignedTo) {
       query.assignedTo = assignedTo;
     }
 
-    // 🔹 Search by name, email, or phone
     if (search) {
       query.$or = [
         { customerName: { $regex: search, $options: "i" } },
@@ -48,17 +46,13 @@ export const getEnquiries = async (req: Request, res: Response) => {
       ];
     }
 
-    // 🔹 Pagination
     const skip = (Number(page) - 1) * Number(limit);
-
-    // 🔹 If user is staff, only show assigned enquiries
     const { role, userId } = req as any;
 
     if (role === "staff") {
       query.assignedTo = userId;
     }
 
-    // 🔹 Fetch enquiries
     const enquiries = await Enquiry.find(query)
       .populate("assignedTo", "name email role")
       .sort({ createdAt: -1 })
@@ -116,16 +110,16 @@ export const updateEnquiry = async (req: Request, res: Response) => {
 
     const requesterId = userId.toString();
 
-    // 🔹 Staff restriction (compare as strings)
+    // Staff restriction (compare as strings)
     if (role === "staff" && assignedId !== requesterId) {
       return res.status(403).json({ error: "Not allowed" });
     }
 
-    // 🔹 Allowed fields
+    // Allowed fields
     const allowed =
       role === "admin"
         ? ["customerName", "email", "phone", "message", "status", "assignedTo"]
-        : ["status"]; // staff can only update status
+        : ["status"];
 
     const updates: any = {};
     for (const key of allowed) {

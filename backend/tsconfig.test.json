@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,                  // We don't need compiled .js output for tests
+    "isolatedModules": false,        // Needed for ts-jest
+    "allowJs": true                  // Allows JS in node_modules for mocking if needed
+  },
+  "include": ["tests/**/*", "src/**/*"]
+}

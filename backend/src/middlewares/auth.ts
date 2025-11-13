@@ -29,7 +29,6 @@ export default async function auth(
       return res.status(401).json({ error: "User not found" });
     }
 
-    // ✅ Attach user info safely
     (req as any).user = user;
     (req as any).userId = user._id;
     (req as any).role = user.role;

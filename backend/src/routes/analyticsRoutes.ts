@@ -5,7 +5,6 @@ import { requireRole } from "../middlewares/roles";
 
 const router = express.Router();
 
-// ✅ GET /analytics/top-performers
 router.get("/top-performers", auth, requireRole("admin"), async (req, res) => {
   try {
     const startOfWeek = new Date();
