@@ -6,13 +6,8 @@ import api from "../../services/api";
 import { toast } from "react-toastify";
 import { EnquiryDetailsDialog } from "../../component/enquiry/EnquiryDetailsDialog";
 import { NewEnquiryDialog } from "../../component/enquiry/NewEnquiryDialog";
-import {
-  ClipboardList,
-  MessageSquare,
-  Activity,
-  CheckCircle,
-} from "lucide-react";
 import { useAuth } from "../../context/useAuth";
+import { StatusOverview } from "../../component/dashboard/StatusCards";
 
 const EnquiryPage = () => {
   const [selectedTab, setSelectedTab] = useState("all");
@@ -22,40 +17,14 @@ const EnquiryPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [selectedEnquiry, setSelectedEnquiry] = useState<any | null>(null);
   const [search, setSearch] = useState("");
-  const [globalStats, setGlobalStats] = useState({
-    total: 0,
-    new: 0,
-    in_progress: 0,
-    closed: 0,
-  });
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
 
-  // Add refresh trigger state
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
-
-  // Create refresh function
   const refreshAll = useCallback(() => {
     setRefreshTrigger((prev) => prev + 1);
   }, []);
-
-  const fetchGlobalStats = async () => {
-    try {
-      const res = await api.get("/enquiries?limit=10000");
-      const all = res.data.data || [];
-      const active = all.filter((e: any) => !e.deleted);
-
-      setGlobalStats({
-        total: active.length,
-        new: active.filter((e: any) => e.status === "new").length,
-        in_progress: active.filter((e: any) => e.status === "in_progress")
-          .length,
-        closed: active.filter((e: any) => e.status === "closed").length,
-      });
-    } catch (err) {
-      console.error("Failed to fetch global stats:", err);
-    }
-  };
 
   const fetchEnquiries = async (pageNum = 1) => {
     try {
@@ -66,6 +35,7 @@ const EnquiryPage = () => {
       const all = res.data.data || [];
       const active = all.filter((e: any) => !e.deleted);
       setEnquiries(active);
+
       setPage(res.data.page);
       setTotalPages(Math.ceil(res.data.total / res.data.limit));
     } catch (err) {
@@ -76,25 +46,23 @@ const EnquiryPage = () => {
     }
   };
 
-  // Single useEffect with refreshTrigger dependency
   useEffect(() => {
     fetchEnquiries();
-    fetchGlobalStats();
-  }, [search, refreshTrigger]); // Added refreshTrigger here
+  }, [search, refreshTrigger]);
 
   const handleDelete = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this enquiry?"))
       return;
+
     try {
       await api.delete(`/enquiries/${id}`);
       toast.success("Enquiry deleted successfully");
-      refreshAll(); // Use refreshAll instead of individual fetches
+      refreshAll();
     } catch (err) {
       toast.error("Failed to delete enquiry");
     }
   };
 
-  // Filter by status
   const filteredEnquiries =
     selectedTab === "all"
       ? enquiries
@@ -109,38 +77,9 @@ const EnquiryPage = () => {
     return colors[status] || "bg-gray-100 text-gray-700 border-gray-200";
   };
 
-  // Stats counts
-  const cards = [
-    {
-      label: "Total Enquiries",
-      value: globalStats.total,
-      icon: <ClipboardList size={20} className="text-white" />,
-      iconBg: "bg-blue-500",
-    },
-    {
-      label: "New Today",
-      value: globalStats.new,
-      icon: <MessageSquare size={20} className="text-white" />,
-      iconBg: "bg-pink-500",
-    },
-    {
-      label: "In Progress",
-      value: globalStats.in_progress,
-      icon: <Activity size={20} className="text-white" />,
-      iconBg: "bg-orange-500",
-    },
-    {
-      label: "Closed Enquiries",
-      value: globalStats.closed,
-      icon: <CheckCircle size={20} className="text-white" />,
-      iconBg: "bg-green-500",
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
+      <div className="w-full mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
@@ -152,33 +91,11 @@ const EnquiryPage = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            {isAdmin && (
-              <NewEnquiryDialog onCreated={refreshAll} /> // Use refreshAll here
-            )}
+            {isAdmin && <NewEnquiryDialog onCreated={refreshAll} />}
           </div>
         </div>
 
-        {/* Stats - These will now update instantly */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-          {cards.map((card, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all"
-            >
-              <div>
-                <p className="text-sm text-gray-500">{card.label}</p>
-                <h3 className="text-2xl font-bold text-gray-900 mt-1">
-                  {card.value}
-                </h3>
-              </div>
-              <div
-                className={`${card.iconBg} w-10 h-10 rounded-full flex items-center justify-center`}
-              >
-                {card.icon}
-              </div>
-            </div>
-          ))}
-        </div>
+        <StatusOverview refreshTrigger={refreshTrigger} />
 
         {/* Filters */}
         <div className="border-b border-gray-200 pb-4 flex items-center justify-between flex-wrap gap-3">
@@ -221,24 +138,12 @@ const EnquiryPage = () => {
                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Customer
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Phone
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Assigned To
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Created
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Actions
-                </th>
+                <th className="px-6 py-3">Email</th>
+                <th className="px-6 py-3">Phone</th>
+                <th className="px-6 py-3">Status</th>
+                <th className="px-6 py-3">Assigned To</th>
+                <th className="px-6 py-3">Created</th>
+                <th className="px-6 py-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -265,6 +170,7 @@ const EnquiryPage = () => {
                     </td>
                     <td className="px-6 py-3">{enq.email}</td>
                     <td className="px-6 py-3">{enq.phone}</td>
+
                     <td className="px-6 py-3">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(
@@ -274,26 +180,28 @@ const EnquiryPage = () => {
                         {enq.status.replace("_", " ")}
                       </span>
                     </td>
+
                     <td className="px-6 py-3">
                       {enq.assignedTo?.name || "Unassigned"}
                     </td>
+
                     <td className="px-6 py-3">
                       {new Date(enq.createdAt).toLocaleDateString()}
                     </td>
+
                     <td className="px-6 py-3 text-right">
                       <div className="flex justify-end gap-2">
                         <button
                           onClick={() => setSelectedEnquiry(enq)}
-                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all cursor-pointer"
-                          title="View Details"
+                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg cursor-pointer"
                         >
                           <Eye size={16} />
                         </button>
+
                         {isAdmin && (
                           <button
                             onClick={() => handleDelete(enq._id)}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
-                            title="Delete"
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg cursor-pointer"
                           >
                             <Trash2 size={16} />
                           </button>
@@ -307,7 +215,7 @@ const EnquiryPage = () => {
           </table>
 
           {/* Pagination */}
-          <div className="border-t border-gray-200 px-6 py-4 flex items-center justify-between">
+          <div className="border-t border-gray-200 px-8 py-8 flex items-center justify-between">
             <p className="text-sm text-gray-600">
               Page {page} of {totalPages}
             </p>
@@ -315,25 +223,24 @@ const EnquiryPage = () => {
               <button
                 disabled={page <= 1}
                 onClick={() => fetchEnquiries(page - 1)}
-                className="px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-all flex items-center gap-1 disabled:opacity-50 cursor-pointer"
+                className="px-2 py-2 bg-white border border-gray-300 rounded-lg text-sm hover:bg-gray-50 cursor-pointer"
               >
-                <ChevronLeft size={16} />
-                Previous
+                <ChevronLeft size={15} />
               </button>
+
               <button
                 disabled={page >= totalPages}
                 onClick={() => fetchEnquiries(page + 1)}
-                className="px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-all flex items-center gap-1 disabled:opacity-50 cursor-pointer"
+                className="px-2 py-2 bg-white border border-gray-300 rounded-lg text-sm hover:bg-gray-50 cursor-pointer"
               >
-                Next
-                <ChevronRight size={16} />
+                <ChevronRight size={15} />
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Details Dialog */}
+      {/* Details Modal */}
       {selectedEnquiry && (
         <EnquiryDetailsDialog
           enquiry={selectedEnquiry}

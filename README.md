@@ -58,12 +58,14 @@ CloudBlitz is a modern, full-stack **Enquiry Management System** built with Reac
 ## Features
 
 ### Authentication & Authorization
+
 - Secure JWT-based authentication
 - Role-based access control (Admin & Staff)
 - Protected routes and API endpoints
 - Session persistence with auto token refresh
 
 ### Enquiry Management
+
 - Complete CRUD operations for enquiries
 - Status tracking: New, In Progress, Closed
 - Staff assignment and reassignment
@@ -71,12 +73,14 @@ CloudBlitz is a modern, full-stack **Enquiry Management System** built with Reac
 - Detailed enquiry information management
 
 ### User Management
+
 - Create and manage user accounts (Admin only)
 - Role assignment (Admin/Staff)
 - User activity tracking
 - Team performance monitoring
 
 ### Analytics & Dashboard
+
 - Weekly trend charts (Created vs Closed)
 - Status distribution visualization
 - Top performer leaderboard
@@ -88,6 +92,7 @@ CloudBlitz is a modern, full-stack **Enquiry Management System** built with Reac
 ## Tech Stack
 
 ### Frontend
+
 ![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?logo=vite&logoColor=white)
@@ -104,6 +109,7 @@ CloudBlitz is a modern, full-stack **Enquiry Management System** built with Reac
 - **Axios** - HTTP client
 
 ### Backend
+
 ![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?logo=node.js&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-4.x-000000?logo=express&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-7.x-47A248?logo=mongodb&logoColor=white)
@@ -118,6 +124,7 @@ CloudBlitz is a modern, full-stack **Enquiry Management System** built with Reac
 - **Bcrypt** - Password hashing
 
 ### DevOps & Testing
+
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)
 ![Jest](https://img.shields.io/badge/Jest-29.x-C21325?logo=jest&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?logo=vercel&logoColor=white)
@@ -266,6 +273,7 @@ Cloudblitz/
 ```
 
 **Data Flow:**
+
 1. User interacts with React frontend hosted on Vercel
 2. API requests sent via Axios with JWT token
 3. Express server validates JWT and role permissions
@@ -362,17 +370,17 @@ docker-compose down
 
 ## User Roles and Permissions
 
-| Feature | Admin | Staff |
-|---------|-------|-------|
-| View All Enquiries | Yes | No |
-| View Assigned Enquiries | Yes | Yes |
-| Create Enquiry | Yes | No |
-| Edit Enquiry | All | Own Only |
-| Assign Enquiry | Yes | No |
-| Delete Enquiry | Yes | No |
-| Manage Users | Yes | No |
-| View Full Analytics | Yes | Limited |
-| Change Any Status | Yes | Own Only |
+| Feature                 | Admin | Staff    |
+| ----------------------- | ----- | -------- |
+| View All Enquiries      | Yes   | No       |
+| View Assigned Enquiries | Yes   | Yes      |
+| Create Enquiry          | Yes   | No       |
+| Edit Enquiry            | All   | Own Only |
+| Assign Enquiry          | Yes   | No       |
+| Delete Enquiry          | Yes   | No       |
+| Manage Users            | Yes   | No       |
+| View Full Analytics     | Yes   | Limited  |
+| Change Any Status       | Yes   | Own Only |
 
 ---
 
@@ -386,6 +394,7 @@ docker-compose down
 ### Authentication
 
 #### Register User
+
 ```http
 POST /auth/register
 Content-Type: application/json
@@ -399,6 +408,7 @@ Content-Type: application/json
 ```
 
 **Response (201):**
+
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -412,6 +422,7 @@ Content-Type: application/json
 ```
 
 #### Login
+
 ```http
 POST /auth/login
 Content-Type: application/json
@@ -423,6 +434,7 @@ Content-Type: application/json
 ```
 
 #### Get Current User
+
 ```http
 GET /auth/me
 Authorization: Bearer <your_jwt_token>
@@ -431,12 +443,14 @@ Authorization: Bearer <your_jwt_token>
 ### Enquiries
 
 #### Get All Enquiries
+
 ```http
 GET /enquiries
 Authorization: Bearer <token>
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -456,6 +470,7 @@ Authorization: Bearer <token>
 ```
 
 #### Create Enquiry (Admin Only)
+
 ```http
 POST /enquiries
 Authorization: Bearer <token>
@@ -470,6 +485,7 @@ Content-Type: application/json
 ```
 
 #### Update Enquiry
+
 ```http
 PUT /enquiries/:id
 Authorization: Bearer <token>
@@ -482,6 +498,7 @@ Content-Type: application/json
 ```
 
 #### Delete Enquiry (Admin Only)
+
 ```http
 DELETE /enquiries/:id
 Authorization: Bearer <token>
@@ -490,12 +507,14 @@ Authorization: Bearer <token>
 ### Users (Admin Only)
 
 #### Get All Users
+
 ```http
 GET /users
 Authorization: Bearer <token>
 ```
 
 #### Create User
+
 ```http
 POST /users
 Authorization: Bearer <token>
@@ -510,6 +529,7 @@ Content-Type: application/json
 ```
 
 #### Update User
+
 ```http
 PUT /users/:id
 Authorization: Bearer <token>
@@ -522,6 +542,7 @@ Content-Type: application/json
 ```
 
 #### Delete User
+
 ```http
 DELETE /users/:id
 Authorization: Bearer <token>
@@ -530,18 +551,21 @@ Authorization: Bearer <token>
 ### Analytics
 
 #### Top Performers
+
 ```http
 GET /analytics/top-performers
 Authorization: Bearer <token>
 ```
 
 #### Dashboard Statistics
+
 ```http
 GET /analytics/stats
 Authorization: Bearer <token>
 ```
 
 **Response (200):**
+
 ```json
 {
   "totalEnquiries": 150,
@@ -574,14 +598,14 @@ npm run test:watch
 
 ### Test Coverage
 
-| Component | Statements | Branches | Functions | Lines |
-|-----------|-----------|----------|-----------|-------|
-| **Overall** | 58.64% | 26.96% | 45.45% | 57.91% |
-| app.ts | 95.00% | 50.00% | 100.00% | 94.73% |
-| Controllers | 40.99% | 22.66% | 28.57% | 38.12% |
-| Middleware | 69.56% | 50.00% | 66.66% | 69.56% |
-| Models | 100.00% | 100.00% | 100.00% | 100.00% |
-| Routes | 83.72% | 100.00% | 0.00% | 83.72% |
+| Component   | Statements | Branches | Functions | Lines   |
+| ----------- | ---------- | -------- | --------- | ------- |
+| **Overall** | 58.64%     | 26.96%   | 45.45%    | 57.91%  |
+| app.ts      | 95.00%     | 50.00%   | 100.00%   | 94.73%  |
+| Controllers | 40.99%     | 22.66%   | 28.57%    | 38.12%  |
+| Middleware  | 69.56%     | 50.00%   | 66.66%    | 69.56%  |
+| Models      | 100.00%    | 100.00%  | 100.00%   | 100.00% |
+| Routes      | 83.72%     | 100.00%  | 0.00%     | 83.72%  |
 
 ### Test Suites
 
@@ -630,10 +654,10 @@ npm run test:watch
 
 ## Live Deployment
 
-| Service | URL | Status |
-|---------|-----|--------|
-| **Frontend** | https://cloudblitz-gray.vercel.app | Active |
-| **Backend API** | https://cloudblitz.onrender.com | Active |
+| Service          | URL                                        | Status |
+| ---------------- | ------------------------------------------ | ------ |
+| **Frontend**     | https://cloudblitz-gray.vercel.app         | Active |
+| **Backend API**  | https://cloudblitz.onrender.com            | Active |
 | **Health Check** | https://cloudblitz.onrender.com/api/health | Active |
 
 ---
@@ -641,6 +665,7 @@ npm run test:watch
 ## Roadmap
 
 ### Completed
+
 - JWT Authentication & Authorization
 - Role-based Access Control
 - Enquiry CRUD Operations
@@ -652,6 +677,7 @@ npm run test:watch
 - Production Deployment
 
 ### Planned
+
 - Email Notifications
 - Advanced Search & Filters
 - Export Reports (PDF/Excel)
@@ -701,8 +727,6 @@ AI-First Fullstack Developer
 
 ## Acknowledgments
 
-- [Cursor AI](https://cursor.sh/) - AI-powered code editor
-- [GitHub Copilot](https://github.com/features/copilot) - AI pair programmer
 - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) - Cloud database
 - [Vercel](https://vercel.com/) - Frontend hosting
 - [Render](https://render.com/) - Backend hosting
