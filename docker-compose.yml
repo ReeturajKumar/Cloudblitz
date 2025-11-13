@@ -21,7 +21,7 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=mongodb+srv://reeturaj587:reeturaj587@cluster0.78bkigv.mongodb.net/Cloudblitz?appName=Cluster0
+      - MONGO_URI=mongodb+srv://@cluster0.78bkigv.mongodb.net/Cloudblitz?appName=Cluster0
       - NODE_ENV=production
 
   frontend:
